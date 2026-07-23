@@ -25,11 +25,13 @@ export function AdminEditMatchForm({
   );
 
   return (
-    <form action={formAction} className="grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
+    <form action={formAction} className="grid items-start gap-3 sm:grid-cols-[1fr_1fr_auto]">
       <input type="hidden" name="matchId" value={matchId} />
-      <input className={inputClass} name="playerOneScore" type="number" min={0} max={99} defaultValue={playerOneScore} />
-      <input className={inputClass} name="playerTwoScore" type="number" min={0} max={99} defaultValue={playerTwoScore} />
-      <SubmitButton disabled={pending}>{pending ? "Updating..." : "Update"}</SubmitButton>
+      <input className={`${inputClass} h-11`} name="playerOneScore" type="number" min={0} max={99} defaultValue={playerOneScore} />
+      <input className={`${inputClass} h-11`} name="playerTwoScore" type="number" min={0} max={99} defaultValue={playerTwoScore} />
+      <SubmitButton disabled={pending} className="h-11 self-start">
+        {pending ? "Updating..." : "Update"}
+      </SubmitButton>
       <AdminActionStatus state={state} />
     </form>
   );
