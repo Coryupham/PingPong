@@ -105,7 +105,7 @@ export default async function AdminPage() {
         </Panel>
       </section>
 
-      <section className="grid content-start gap-3">
+      <section className="grid auto-rows-max content-start items-start gap-3">
         <div>
           <p className="text-sm font-bold uppercase tracking-[0.16em] text-court">Score control</p>
           <h2 className="mt-2 text-3xl font-black text-ink">Recent matches</h2>
@@ -118,7 +118,7 @@ export default async function AdminPage() {
             const playerTwoName = match.player_two_name ?? p2?.display_name ?? "Player 2";
 
             return (
-              <Panel key={match.id} className="grid gap-3 p-4">
+              <Panel key={match.id} className="grid self-start gap-3 p-4">
                 <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <p className="font-black text-ink">
