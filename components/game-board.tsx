@@ -163,38 +163,37 @@ export function GameBoard() {
         </section>
       ) : (
         <>
-          <div className="grid gap-4 lg:grid-cols-[1fr_auto_1fr]">
-            <ScoreColumn
-              label={playerOne?.displayName ?? "Player 1"}
-              score={playerOneScore}
-              isServing={serverSide === "playerOne"}
-              onAdd={() => bump("playerOne", 1)}
-              onSubtract={() => bump("playerOne", -1)}
-            />
-            <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-court/40 bg-night px-5 py-6 text-ink shadow-glow">
-              <p className="text-sm font-black uppercase tracking-[0.16em] text-court">Serving</p>
-              <p className="text-center text-2xl font-black">{serverName}</p>
-              <p className="text-center text-sm font-bold text-mist">
-                {playerOne?.displayName ?? "Player 1"} vs {playerTwo?.displayName ?? "Player 2"}
-              </p>
-              <p className="max-w-44 text-center text-xs leading-5 text-mist">
+          <section className="rounded-lg border border-line bg-graphite/92 p-3 text-ink shadow-panel sm:p-5">
+            <div className="rounded-md border border-court/40 bg-night px-3 py-3 text-center shadow-glow sm:px-5 sm:py-4">
+              <p className="text-xs font-black uppercase tracking-[0.16em] text-court sm:text-sm">Serving</p>
+              <p className="mt-1 break-words text-xl font-black sm:text-2xl">{serverName}</p>
+              <p className="mt-1 text-xs font-bold leading-5 text-mist sm:text-sm">
                 Serve switches every two points, then every point after 10-10.
               </p>
             </div>
-            <ScoreColumn
-              label={playerTwo?.displayName ?? "Player 2"}
-              score={playerTwoScore}
-              isServing={serverSide === "playerTwo"}
-              onAdd={() => bump("playerTwo", 1)}
-              onSubtract={() => bump("playerTwo", -1)}
-            />
-          </div>
+            <div className="mt-3 grid grid-cols-2 gap-3 sm:mt-5 sm:gap-4">
+              <ScorePanel
+                label={playerOne?.displayName ?? "Player 1"}
+                score={playerOneScore}
+                isServing={serverSide === "playerOne"}
+                onAdd={() => bump("playerOne", 1)}
+                onSubtract={() => bump("playerOne", -1)}
+              />
+              <ScorePanel
+                label={playerTwo?.displayName ?? "Player 2"}
+                score={playerTwoScore}
+                isServing={serverSide === "playerTwo"}
+                onAdd={() => bump("playerTwo", 1)}
+                onSubtract={() => bump("playerTwo", -1)}
+              />
+            </div>
+          </section>
 
-          <div className="rounded-lg border border-line bg-graphite/92 p-5 shadow-panel">
+          <div className="rounded-lg border border-line bg-graphite/92 p-4 shadow-panel sm:p-5">
             <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
               <div>
-                <p className="text-sm font-black uppercase tracking-[0.14em] text-mist">Match status</p>
-                <p className="text-xl font-black text-ink">
+                <p className="text-xs font-black uppercase tracking-[0.14em] text-mist sm:text-sm">Match status</p>
+                <p className="text-lg font-black text-ink sm:text-xl">
                   {winnerName ? `${winnerName} wins ${playerOneScore}-${playerTwoScore}` : "First to 11, win by two"}
                 </p>
               </div>
@@ -358,7 +357,7 @@ export function GameBoard() {
   );
 }
 
-function ScoreColumn({
+function ScorePanel({
   label,
   score,
   isServing,
@@ -372,30 +371,36 @@ function ScoreColumn({
   onSubtract: () => void;
 }) {
   return (
-    <section className="rounded-lg border border-line bg-graphite/92 p-5 text-center shadow-panel">
-      <div className="flex min-h-10 items-center justify-center gap-2">
-        <h2 className="text-xl font-black text-ink">{label}</h2>
-        {isServing ? <span className="rounded bg-court px-2 py-1 text-xs font-black text-night shadow-glow">SERVE</span> : null}
+    <div className="min-w-0 rounded-md border border-line bg-graphite p-3 text-center sm:p-5">
+      <div className="flex min-h-12 flex-col items-center justify-center gap-1 sm:min-h-10 sm:flex-row sm:gap-2">
+        <h2 className="max-w-full break-words text-base font-black leading-tight text-ink sm:text-xl">{label}</h2>
+        {isServing ? (
+          <span className="rounded bg-court px-2 py-1 text-[0.65rem] font-black leading-none text-night shadow-glow sm:text-xs">
+            SERVE
+          </span>
+        ) : null}
       </div>
-      <p className="my-8 text-8xl font-black tabular-nums text-ink drop-shadow-[0_0_22px_rgba(46,213,115,0.18)]">{score}</p>
-      <div className="grid grid-cols-2 gap-3">
+      <p className="my-4 text-6xl font-black tabular-nums leading-none text-ink drop-shadow-[0_0_22px_rgba(46,213,115,0.18)] sm:my-7 sm:text-8xl">
+        {score}
+      </p>
+      <div className="grid grid-cols-2 gap-2 sm:gap-3">
         <button
           type="button"
           onClick={onSubtract}
-          className="focus-ring grid h-16 place-items-center rounded-md border border-line bg-night text-ink hover:bg-slate-900"
+          className="focus-ring grid h-12 place-items-center rounded-md border border-line bg-night text-ink hover:bg-slate-900 sm:h-16"
           aria-label={`Subtract point from ${label}`}
         >
-          <Minus className="h-7 w-7" />
+          <Minus className="h-6 w-6 sm:h-7 sm:w-7" />
         </button>
         <button
           type="button"
           onClick={onAdd}
-          className="focus-ring grid h-16 place-items-center rounded-md bg-court text-night shadow-glow hover:bg-emerald-300"
+          className="focus-ring grid h-12 place-items-center rounded-md bg-court text-night shadow-glow hover:bg-emerald-300 sm:h-16"
           aria-label={`Add point to ${label}`}
         >
-          <Plus className="h-7 w-7" />
+          <Plus className="h-6 w-6 sm:h-7 sm:w-7" />
         </button>
       </div>
-    </section>
+    </div>
   );
 }
