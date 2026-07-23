@@ -1,56 +1,56 @@
 import { unstable_noStore as noStore } from "next/cache";
-import { createSupabaseServerClient, hasSupabaseConfig } from "@/lib/supabase";
-import type { GameInvite, Match, Profile } from "@/lib/types";
+import { createSupabaseAdminClient, createSupabaseServerClient, hasSupabaseConfig } from "@/lib/supabase";
+import type { Match, Player } from "@/lib/types";
 
-export type RankingProfile = Pick<
-  Profile,
-  "id" | "display_name" | "rating" | "wins" | "losses" | "games_played" | "points_for" | "points_against" | "is_admin"
+export type RankingPlayer = Pick<
+  Player,
+  "id" | "display_name" | "email" | "rating" | "wins" | "losses" | "games_played" | "points_for" | "points_against"
 >;
 
-const demoProfiles: RankingProfile[] = [
+const demoPlayers: RankingPlayer[] = [
   {
     id: "demo-1",
     display_name: "Avery Chen",
+    email: "avery@example.com",
     rating: 1048,
     wins: 3,
     losses: 1,
     games_played: 4,
     points_for: 43,
-    points_against: 35,
-    is_admin: true
+    points_against: 35
   },
   {
     id: "demo-2",
     display_name: "Morgan Lee",
+    email: "morgan@example.com",
     rating: 1015,
     wins: 2,
     losses: 2,
     games_played: 4,
     points_for: 39,
-    points_against: 38,
-    is_admin: false
+    points_against: 38
   },
   {
     id: "demo-3",
     display_name: "Jordan Patel",
+    email: "jordan@example.com",
     rating: 987,
     wins: 1,
     losses: 2,
     games_played: 3,
     points_for: 29,
-    points_against: 32,
-    is_admin: false
+    points_against: 32
   },
   {
     id: "demo-4",
     display_name: "Sam Rivera",
+    email: "sam@example.com",
     rating: 950,
     wins: 0,
     losses: 1,
     games_played: 1,
     points_for: 8,
-    points_against: 11,
-    is_admin: false
+    points_against: 11
   }
 ];
 
@@ -74,69 +74,38 @@ export async function getCurrentProfile() {
   return data;
 }
 
-export async function getRankings(): Promise<RankingProfile[]> {
+export async function getRankings(): Promise<RankingPlayer[]> {
   noStore();
 
   if (!hasSupabaseConfig()) {
-    return demoProfiles;
+    return demoPlayers;
   }
 
-  const supabase = await createSupabaseServerClient();
+  const supabase = createSupabaseAdminClient();
   if (!supabase) {
-    return demoProfiles;
+    return demoPlayers;
   }
 
   const { data, error } = await supabase
-    .from("profiles")
-    .select("id, display_name, rating, wins, losses, games_played, points_for, points_against, is_admin")
+    .from("players")
+    .select("id, display_name, email, rating, wins, losses, games_played, points_for, points_against")
     .order("rating", { ascending: false })
     .order("wins", { ascending: false })
     .order("games_played", { ascending: false });
 
   if (error || !data) {
-    return demoProfiles;
+    return demoPlayers;
   }
 
   return data;
 }
 
 export async function getPlayers() {
-  const rankings = await getRankings();
-  return rankings.filter((player) => !player.is_admin || rankings.length === 1);
-}
-
-export async function getInvitesForCurrentUser() {
-  const profile = await getCurrentProfile();
-  const supabase = await createSupabaseServerClient();
-  if (!profile || !supabase) {
-    return { profile, invites: [] as GameInvite[] };
-  }
-
-  const { data } = await supabase
-    .from("game_invites")
-    .select("*")
-    .or(`challenger_id.eq.${profile.id},opponent_id.eq.${profile.id}`)
-    .order("created_at", { ascending: false });
-
-  return { profile, invites: data ?? [] };
-}
-
-export async function getInviteById(inviteId?: string) {
-  if (!inviteId) {
-    return null;
-  }
-
-  const supabase = await createSupabaseServerClient();
-  if (!supabase) {
-    return null;
-  }
-
-  const { data } = await supabase.from("game_invites").select("*").eq("id", inviteId).single();
-  return data;
+  return getRankings();
 }
 
 export async function getRecentMatches(limit = 20) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = createSupabaseAdminClient();
   if (!supabase) {
     return [] as Match[];
   }

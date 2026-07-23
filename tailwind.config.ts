@@ -5,13 +5,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#111827",
-        court: "#1f9d8a",
-        paddle: "#ef4444",
-        gold: "#f59e0b"
+        ink: "#f8fafc",
+        court: "#2ed573",
+        paddle: "#ff4d6d",
+        gold: "#facc15",
+        night: "#101116",
+        graphite: "#191b24",
+        line: "#2a2d3a",
+        mist: "#aab3c2"
       },
       boxShadow: {
-        panel: "0 18px 45px rgba(17, 24, 39, 0.08)"
+        panel: "0 24px 70px rgba(0, 0, 0, 0.34)",
+        glow: "0 0 0 1px rgba(46, 213, 115, 0.24), 0 18px 48px rgba(46, 213, 115, 0.12)"
       }
     }
   },

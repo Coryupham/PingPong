@@ -7,7 +7,7 @@ export default function ResetPasswordPage() {
     <main className="mx-auto max-w-md px-4 py-10">
       <Panel>
         <h1 className="text-3xl font-black text-ink">Reset password</h1>
-        <p className="mt-2 text-sm leading-6 text-slate-600">
+        <p className="mt-2 text-sm leading-6 text-mist">
           Supabase will email a recovery link using the project email settings.
         </p>
         <div className="mt-6">

@@ -7,8 +7,8 @@ export default function LoginPage() {
   return (
     <main className="mx-auto max-w-md px-4 py-10">
       <Panel>
-        <h1 className="text-3xl font-black text-ink">Log in</h1>
-        <p className="mt-2 text-sm leading-6 text-slate-600">Jump back into scoring and league tracking.</p>
+        <h1 className="text-3xl font-black text-ink">Admin login</h1>
+        <p className="mt-2 text-sm leading-6 text-mist">Manage players, scores, and league settings.</p>
         <div className="mt-6">
           <ActionForm action={loginAction} submitLabel="Log in">
             <Field label="Email">
@@ -19,10 +19,7 @@ export default function LoginPage() {
             </Field>
           </ActionForm>
         </div>
-        <div className="mt-5 flex justify-between text-sm text-slate-600">
-          <Link className="font-bold text-court" href="/sign-up">
-            Create account
-          </Link>
+        <div className="mt-5 flex justify-end text-sm text-mist">
           <Link className="font-bold text-court" href="/reset-password">
             Reset password
           </Link>

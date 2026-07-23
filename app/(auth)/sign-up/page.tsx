@@ -1,38 +1,37 @@
-import Link from "next/link";
+import { playerSignupAction } from "@/app/actions/player-signup";
 import { ActionForm } from "@/components/auth-form-status";
 import { Field, Panel, inputClass } from "@/components/ui";
-import { signUpAction } from "@/app/actions/auth";
 
 export default function SignUpPage() {
   return (
     <main className="mx-auto max-w-md px-4 py-10">
       <Panel>
-        <h1 className="text-3xl font-black text-ink">Create your player</h1>
-        <p className="mt-2 text-sm leading-6 text-slate-600">
-          Your PIN is used by opponents to confirm a match before score submission.
+        <p className="text-sm font-black uppercase tracking-[0.16em] text-court">League roster</p>
+        <h1 className="mt-2 text-3xl font-black text-ink">Create your player</h1>
+        <p className="mt-2 text-sm leading-6 text-mist">
+          Join the roster with your email and a 4 to 8 digit PIN. You will use these at the table before a match.
         </p>
         <div className="mt-6">
-          <ActionForm action={signUpAction} submitLabel="Create account">
+          <ActionForm action={playerSignupAction} autoComplete="off" submitLabel="Create player">
             <Field label="Display name">
-              <input className={inputClass} name="displayName" required />
+              <input className={inputClass} name="displayName" autoComplete="off" required />
             </Field>
             <Field label="Email">
-              <input className={inputClass} name="email" type="email" required />
+              <input className={inputClass} name="playerEmail" type="email" autoComplete="off" required />
             </Field>
-            <Field label="Password">
-              <input className={inputClass} name="password" type="password" minLength={8} required />
-            </Field>
-            <Field label="Match confirmation PIN">
-              <input className={inputClass} name="pin" inputMode="numeric" pattern="[0-9]{4,8}" required />
+            <Field label="Player PIN">
+              <input
+                className={inputClass}
+                name="playerPin"
+                inputMode="numeric"
+                pattern="[0-9]{4,8}"
+                type="password"
+                autoComplete="new-password"
+                required
+              />
             </Field>
           </ActionForm>
         </div>
-        <p className="mt-5 text-sm text-slate-600">
-          Already playing?{" "}
-          <Link className="font-bold text-court" href="/login">
-            Log in
-          </Link>
-        </p>
       </Panel>
     </main>
   );

@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1784779256247,
+      "tag": "0000_public_gressill",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1784779527158,
+      "tag": "0001_readable_match_snapshots",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1784781887254,
+      "tag": "0002_regular_lizard",
+      "breakpoints": true
+    }
+  ]
+}
