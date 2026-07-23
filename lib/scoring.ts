@@ -5,12 +5,15 @@ export type ScoreState = {
   playerTwo: number;
 };
 
+export const MAX_SCORE = 11;
+export const MAX_RECORDED_SCORE = 99;
+
 export function getWinner(score: ScoreState): PlayerSide | null {
   const { playerOne, playerTwo } = score;
   const high = Math.max(playerOne, playerTwo);
-  const low = Math.min(playerOne, playerTwo);
+  const lead = Math.abs(playerOne - playerTwo);
 
-  if (high < 11 || high - low < 2) {
+  if (high < MAX_SCORE || lead < 2) {
     return null;
   }
 
@@ -27,6 +30,16 @@ export function getServer(firstServer: PlayerSide | null, score: ScoreState): Pl
   }
 
   const totalPoints = score.playerOne + score.playerTwo;
+  const isDeuceOrLater = score.playerOne >= MAX_SCORE - 1 && score.playerTwo >= MAX_SCORE - 1;
+
+  if (isDeuceOrLater) {
+    return totalPoints % 2 === 0
+      ? firstServer
+      : firstServer === "playerOne"
+        ? "playerTwo"
+        : "playerOne";
+  }
+
   const serviceBlock = Math.floor(totalPoints / 2);
   const firstServes = serviceBlock % 2 === 0;
 
@@ -42,7 +55,7 @@ export function clampScore(value: number) {
     return 0;
   }
 
-  return Math.max(0, Math.min(99, Math.trunc(value)));
+  return Math.max(0, Math.min(MAX_RECORDED_SCORE, Math.trunc(value)));
 }
 
 export function pointDifferential(scoreFor: number, scoreAgainst: number) {

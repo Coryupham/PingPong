@@ -4,41 +4,45 @@ export type Profile = {
   id: string;
   display_name: string;
   email: string | null;
-  pin_hash: string;
   is_admin: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type Player = {
+  id: string;
+  display_name: string;
+  email: string;
+  pin_hash: string;
   rating: number;
   wins: number;
   losses: number;
   games_played: number;
   points_for: number;
   points_against: number;
+  created_by: string | null;
   created_at: string;
   updated_at: string;
 };
 
-export type InviteStatus = "pending" | "accepted" | "declined" | "canceled" | "expired";
 export type MatchStatus = "final" | "voided" | "corrected";
-
-export type GameInvite = {
-  id: string;
-  challenger_id: string;
-  opponent_id: string;
-  status: InviteStatus;
-  message: string | null;
-  created_at: string;
-  updated_at: string;
-  accepted_at: string | null;
-};
 
 export type Match = {
   id: string;
   player_one_id: string;
+  player_one_name: string | null;
+  player_one_email: string | null;
   player_two_id: string;
+  player_two_name: string | null;
+  player_two_email: string | null;
   player_one_score: number;
   player_two_score: number;
   winner_id: string;
+  winner_name: string | null;
+  winner_email: string | null;
   first_server_id: string | null;
-  invite_id: string | null;
+  first_server_name: string | null;
+  first_server_email: string | null;
   status: MatchStatus;
   submitted_by: string;
   confirmed_by: string;
@@ -51,13 +55,13 @@ export type Database = {
     Tables: {
       profiles: {
         Row: Profile;
-        Insert: Partial<Profile> & Pick<Profile, "id" | "display_name" | "pin_hash">;
+        Insert: Partial<Profile> & Pick<Profile, "id" | "display_name">;
         Update: Partial<Profile>;
       };
-      game_invites: {
-        Row: GameInvite;
-        Insert: Partial<GameInvite> & Pick<GameInvite, "challenger_id" | "opponent_id">;
-        Update: Partial<GameInvite>;
+      players: {
+        Row: Player;
+        Insert: Partial<Player> & Pick<Player, "display_name" | "email" | "pin_hash">;
+        Update: Partial<Player>;
       };
       matches: {
         Row: Match;

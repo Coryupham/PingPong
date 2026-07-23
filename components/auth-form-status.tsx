@@ -11,10 +11,12 @@ type FormState = {
 export function ActionForm({
   action,
   children,
+  autoComplete,
   submitLabel
 }: {
   action: (formData: FormData) => Promise<FormState>;
   children: React.ReactNode;
+  autoComplete?: React.FormHTMLAttributes<HTMLFormElement>["autoComplete"];
   submitLabel: string;
 }) {
   const [state, formAction, pending] = useActionState(
@@ -23,11 +25,17 @@ export function ActionForm({
   );
 
   return (
-    <form action={formAction} className="grid gap-4">
+    <form action={formAction} autoComplete={autoComplete} className="grid gap-4">
       {children}
-      {state?.error ? <p className="rounded-md bg-red-50 p-3 text-sm font-semibold text-red-700">{state.error}</p> : null}
+      {state?.error ? (
+        <p className="rounded-md border border-paddle/40 bg-paddle/10 p-3 text-sm font-bold text-paddle">
+          {state.error}
+        </p>
+      ) : null}
       {state?.success ? (
-        <p className="rounded-md bg-emerald-50 p-3 text-sm font-semibold text-emerald-700">{state.success}</p>
+        <p className="rounded-md border border-court/40 bg-court/10 p-3 text-sm font-bold text-court">
+          {state.success}
+        </p>
       ) : null}
       <SubmitButton disabled={pending}>{pending ? "Working..." : submitLabel}</SubmitButton>
     </form>

@@ -6,7 +6,15 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function Panel({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("rounded-lg bg-white p-5 shadow-panel", className)} {...props} />;
+  return (
+    <div
+      className={cn(
+        "rounded-lg border border-line bg-graphite/92 p-5 text-ink shadow-panel",
+        className
+      )}
+      {...props}
+    />
+  );
 }
 
 export function SubmitButton({
@@ -17,7 +25,7 @@ export function SubmitButton({
   return (
     <button
       className={cn(
-        "focus-ring inline-flex items-center justify-center rounded-md bg-court px-4 py-2 font-bold text-white hover:bg-teal-700 disabled:cursor-not-allowed disabled:bg-slate-300",
+        "focus-ring inline-flex items-center justify-center rounded-md bg-court px-4 py-2 font-black text-night shadow-glow hover:bg-emerald-300 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400 disabled:shadow-none",
         className
       )}
       {...props}
@@ -35,7 +43,7 @@ export function Field({
   children: React.ReactNode;
 }) {
   return (
-    <label className="grid gap-2 text-sm font-semibold text-slate-700">
+    <label className="grid gap-2 text-sm font-bold text-mist">
       {label}
       {children}
     </label>
@@ -43,4 +51,4 @@ export function Field({
 }
 
 export const inputClass =
-  "focus-ring w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-ink shadow-sm focus:border-court";
+  "focus-ring w-full rounded-md border border-line bg-night/80 px-3 py-2 text-ink shadow-sm placeholder:text-slate-500 focus:border-court";
