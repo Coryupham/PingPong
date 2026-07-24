@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
 import { logoutAction } from "@/app/actions/auth";
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
   title: "Ping Pong League",
   description: "Score matches, confirm opponents, and track league rankings.",
   icons: {
-    icon: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏓</text></svg>"
+    icon: [{ url: "/ping-pong-logo.svg", type: "image/svg+xml" }]
   }
 };
 
@@ -22,7 +23,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
             <Link href="/" className="flex items-center gap-2 font-black text-ink">
               <span className="grid h-9 w-9 place-items-center rounded-md bg-court text-sm font-black text-night shadow-glow">
-                🏓
+                <Image src="/ping-pong-logo.svg" alt="" width={28} height={28} priority />
               </span>
               <span>Ping Pong League</span>
             </Link>
