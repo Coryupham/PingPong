@@ -22,6 +22,13 @@
       "when": 1784781887254,
       "tag": "0002_regular_lizard",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1784854082519,
+      "tag": "0003_flashy_vulcan",
+      "breakpoints": true
     }
   ]
 }

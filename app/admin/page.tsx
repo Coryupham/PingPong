@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { Database, Download, Trophy } from "lucide-react";
 import {
   adminCreateAdminAction,
   adminCreatePlayerAction,
@@ -9,12 +11,11 @@ import { AdminEditMatchForm, AdminVoidMatchForm } from "@/components/admin-match
 import { ActionForm } from "@/components/auth-form-status";
 import { CopySignupLink } from "@/components/copy-signup-link";
 import { Field, Panel, inputClass } from "@/components/ui";
-import { getCurrentProfile, getRankings, getRecentMatches } from "@/lib/data";
+import { getAdminDatabaseSnapshot, getCurrentProfile, getRankings, getRecentMatches } from "@/lib/data";
+import type { AdminDatabaseSnapshot } from "@/lib/data";
 
 export default async function AdminPage() {
   const profile = await getCurrentProfile();
-  const players = await getRankings();
-  const matches = await getRecentMatches();
 
   if (!profile?.is_admin) {
     return (
@@ -26,6 +27,12 @@ export default async function AdminPage() {
       </main>
     );
   }
+
+  const [players, matches, database] = await Promise.all([
+    getRankings(),
+    getRecentMatches(),
+    getAdminDatabaseSnapshot()
+  ]);
 
   return (
     <main className="mx-auto grid max-w-6xl items-start gap-6 px-4 py-8 lg:grid-cols-[0.85fr_1.15fr]">
@@ -106,6 +113,26 @@ export default async function AdminPage() {
       </section>
 
       <section className="grid auto-rows-max content-start items-start gap-3">
+        <Panel className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <Trophy className="h-5 w-5 text-gold" />
+              <h2 className="text-2xl font-black text-ink">Tournaments</h2>
+            </div>
+            <p className="mt-2 text-sm leading-6 text-mist">
+              Build balanced teams, record tournament games, and advance brackets.
+            </p>
+          </div>
+          <Link
+            className="focus-ring inline-flex items-center justify-center rounded-md bg-gold px-4 py-3 font-black text-night shadow-glow hover:bg-yellow-300"
+            href="/admin/tournaments"
+          >
+            Manage tournaments
+          </Link>
+        </Panel>
+
+        {database ? <DatabasePanel database={database} /> : null}
+
         <div>
           <p className="text-sm font-bold uppercase tracking-[0.16em] text-court">Score control</p>
           <h2 className="mt-2 text-3xl font-black text-ink">Recent matches</h2>
@@ -147,4 +174,166 @@ export default async function AdminPage() {
       </section>
     </main>
   );
+}
+
+function DatabasePanel({ database }: { database: AdminDatabaseSnapshot }) {
+  return (
+    <Panel className="grid gap-5">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <div className="flex items-center gap-2">
+            <Database className="h-5 w-5 text-court" />
+            <h2 className="text-2xl font-black text-ink">Database</h2>
+          </div>
+          <p className="mt-2 text-sm leading-6 text-mist">
+            Live admin view of league tables and recent activity.
+          </p>
+        </div>
+        <a
+          className="focus-ring inline-flex items-center justify-center gap-2 rounded-md bg-court px-4 py-3 font-black text-night shadow-glow hover:bg-emerald-300"
+          href="/admin/export/games"
+          download
+        >
+          <Download className="h-4 w-4" />
+          Export game data
+        </a>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-6">
+        <DatabaseStat label="Admins" value={database.counts.adminProfiles} />
+        <DatabaseStat label="Players" value={database.counts.players} />
+        <DatabaseStat label="Matches" value={database.counts.matches} />
+        <DatabaseStat label="Ratings" value={database.counts.ratingEvents} />
+        <DatabaseStat label="Audit" value={database.counts.auditLog} />
+        <DatabaseStat label="Tournaments" value={database.counts.tournaments} />
+      </div>
+
+      <DatabaseTable
+        title="Players"
+        headers={["Name", "Email", "Rating", "W-L"]}
+        rows={database.players.map((player) => [
+          player.display_name,
+          player.email,
+          String(player.rating),
+          `${player.wins}-${player.losses}`
+        ])}
+      />
+      <DatabaseTable
+        title="Matches"
+        headers={["Created", "Match", "Score", "Status"]}
+        rows={database.matches.map((match) => [
+          formatDate(match.created_at),
+          `${match.player_one_name ?? "Player 1"} vs ${match.player_two_name ?? "Player 2"}`,
+          `${match.player_one_score}-${match.player_two_score}`,
+          match.status
+        ])}
+      />
+      <DatabaseTable
+        title="Rating events"
+        headers={["Created", "Player", "Before", "After", "Delta"]}
+        rows={database.ratingEvents.map((event) => [
+          formatDate(event.created_at),
+          shortId(event.player_id),
+          String(event.rating_before),
+          String(event.rating_after),
+          signedNumber(event.rating_delta)
+        ])}
+      />
+      <DatabaseTable
+        title="Audit log"
+        headers={["Created", "Action", "Table", "Target"]}
+        rows={database.auditLog.map((entry) => [
+          formatDate(entry.created_at),
+          entry.action,
+          entry.target_table,
+          entry.target_id ? shortId(entry.target_id) : "-"
+        ])}
+      />
+      <DatabaseTable
+        title="Tournaments"
+        headers={["Created", "Name", "Teams", "Status"]}
+        rows={database.tournaments.map((tournament) => [
+          formatDate(tournament.created_at),
+          tournament.name,
+          String(tournament.team_count),
+          tournament.status
+        ])}
+      />
+      <DatabaseTable
+        title="Admins"
+        headers={["Name", "Email", "Created"]}
+        rows={database.adminProfiles.map((admin) => [
+          admin.display_name,
+          admin.email ?? "-",
+          formatDate(admin.created_at)
+        ])}
+      />
+    </Panel>
+  );
+}
+
+function DatabaseStat({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-md border border-line bg-night/70 p-3">
+      <p className="text-xs font-black uppercase tracking-[0.12em] text-mist">{label}</p>
+      <p className="mt-1 text-2xl font-black tabular-nums text-court">{value}</p>
+    </div>
+  );
+}
+
+function DatabaseTable({ title, headers, rows }: { title: string; headers: string[]; rows: string[][] }) {
+  return (
+    <div>
+      <h3 className="text-sm font-black uppercase tracking-[0.14em] text-court">{title}</h3>
+      <div className="mt-2 overflow-x-auto rounded-md border border-line">
+        <table className="w-full min-w-[520px] border-collapse text-left text-sm">
+          <thead className="bg-night text-xs uppercase tracking-[0.12em] text-mist">
+            <tr>
+              {headers.map((header) => (
+                <th key={header} className="px-3 py-2 font-black">
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-line bg-graphite/55 text-mist">
+            {rows.length ? (
+              rows.map((row, rowIndex) => (
+                <tr key={`${title}-${rowIndex}`}>
+                  {row.map((cell, cellIndex) => (
+                    <td key={`${title}-${rowIndex}-${cellIndex}`} className="px-3 py-2">
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td className="px-3 py-3 font-semibold text-mist" colSpan={headers.length}>
+                  No rows.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function formatDate(value: string) {
+  return new Intl.DateTimeFormat("en", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  }).format(new Date(value));
+}
+
+function shortId(value: string) {
+  return value.slice(0, 8);
+}
+
+function signedNumber(value: number) {
+  return value > 0 ? `+${value}` : String(value);
 }

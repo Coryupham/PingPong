@@ -43,9 +43,95 @@ export type Match = {
   first_server_id: string | null;
   first_server_name: string | null;
   first_server_email: string | null;
+  tournament_id: string | null;
+  tournament_round: number | null;
+  tournament_match_id: string | null;
   status: MatchStatus;
   submitted_by: string;
   confirmed_by: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type RatingEvent = {
+  id: string;
+  match_id: string;
+  player_id: string;
+  rating_before: number;
+  rating_after: number;
+  rating_delta: number;
+  created_at: string;
+};
+
+export type AdminAuditLog = {
+  id: string;
+  admin_id: string;
+  action: string;
+  target_table: string;
+  target_id: string | null;
+  before_data: Json | null;
+  after_data: Json | null;
+  created_at: string;
+};
+
+export type TournamentStatus = "active" | "complete";
+
+export type TournamentPlayer = {
+  id: string;
+  displayName: string;
+  email: string;
+  rating: number;
+};
+
+export type TournamentTeam = {
+  id: string;
+  name: string;
+  seed: number;
+  players: TournamentPlayer[];
+  ratingTotal: number;
+  averageRating: number;
+};
+
+export type TournamentMatchStatus = "pending" | "complete";
+
+export type TournamentPlayerGame = {
+  id: string;
+  gameNumber: number;
+  playerOneId: string;
+  playerTwoId: string;
+  playerOneScore: number | null;
+  playerTwoScore: number | null;
+  winnerPlayerId: string | null;
+  winnerTeamId: string | null;
+  recordedMatchId: string | null;
+  status: TournamentMatchStatus;
+};
+
+export type TournamentMatch = {
+  id: string;
+  matchNumber: number;
+  teamOneId: string | null;
+  teamTwoId: string | null;
+  games: TournamentPlayerGame[];
+  winnerTeamId: string | null;
+  status: TournamentMatchStatus;
+};
+
+export type TournamentRound = {
+  round: number;
+  matches: TournamentMatch[];
+};
+
+export type Tournament = {
+  id: string;
+  name: string;
+  team_count: number;
+  players_per_team: number;
+  teams: TournamentTeam[];
+  rounds: TournamentRound[];
+  current_round: number;
+  status: TournamentStatus;
+  created_by: string;
   created_at: string;
   updated_at: string;
 };
@@ -73,15 +159,7 @@ export type Database = {
         Update: Partial<Match>;
       };
       rating_events: {
-        Row: {
-          id: string;
-          match_id: string;
-          player_id: string;
-          rating_before: number;
-          rating_after: number;
-          rating_delta: number;
-          created_at: string;
-        };
+        Row: RatingEvent;
         Insert: {
           match_id: string;
           player_id: string;
@@ -92,16 +170,7 @@ export type Database = {
         Update: never;
       };
       admin_audit_log: {
-        Row: {
-          id: string;
-          admin_id: string;
-          action: string;
-          target_table: string;
-          target_id: string | null;
-          before_data: Json | null;
-          after_data: Json | null;
-          created_at: string;
-        };
+        Row: AdminAuditLog;
         Insert: {
           admin_id: string;
           action: string;
@@ -111,6 +180,11 @@ export type Database = {
           after_data?: Json | null;
         };
         Update: never;
+      };
+      tournaments: {
+        Row: Tournament;
+        Insert: Partial<Tournament> & Pick<Tournament, "name" | "team_count" | "players_per_team" | "teams" | "rounds" | "created_by">;
+        Update: Partial<Tournament>;
       };
     };
   };

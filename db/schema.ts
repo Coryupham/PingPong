@@ -21,6 +21,7 @@ export const authUsers = authSchema.table("users", {
 });
 
 export const matchStatus = pgEnum("match_status", ["final", "voided", "corrected"]);
+export const tournamentStatus = pgEnum("tournament_status", ["active", "complete"]);
 
 export const profiles = pgTable(
   "profiles",
@@ -81,6 +82,9 @@ export const matches = pgTable(
     firstServerId: uuid("first_server_id").references(() => players.id),
     firstServerName: text("first_server_name"),
     firstServerEmail: text("first_server_email"),
+    tournamentId: uuid("tournament_id"),
+    tournamentRound: integer("tournament_round"),
+    tournamentMatchId: text("tournament_match_id"),
     status: matchStatus("status").notNull().default("final"),
     submittedBy: uuid("submitted_by").notNull().references(() => players.id),
     confirmedBy: uuid("confirmed_by").notNull().references(() => players.id),
@@ -147,6 +151,29 @@ export const adminAuditLog = pgTable(
   },
   (table) => ({
     recentIdx: index("admin_audit_recent_idx").on(table.createdAt)
+  })
+);
+
+export const tournaments = pgTable(
+  "tournaments",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    teamCount: integer("team_count").notNull(),
+    playersPerTeam: integer("players_per_team").notNull(),
+    teams: jsonb("teams").notNull().default(sql`'[]'::jsonb`),
+    rounds: jsonb("rounds").notNull().default(sql`'[]'::jsonb`),
+    currentRound: integer("current_round").notNull().default(1),
+    status: tournamentStatus("status").notNull().default("active"),
+    createdBy: uuid("created_by").notNull().references(() => profiles.id),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => ({
+    recentIdx: index("tournaments_recent_idx").on(table.createdAt),
+    teamCountBounds: check("tournaments_team_count_bounds", sql`${table.teamCount} >= 2`),
+    playersPerTeamBounds: check("tournaments_players_per_team_bounds", sql`${table.playersPerTeam} >= 1`),
+    currentRoundBounds: check("tournaments_current_round_bounds", sql`${table.currentRound} >= 1`)
   })
 );
 
