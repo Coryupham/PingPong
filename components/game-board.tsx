@@ -139,13 +139,13 @@ export function GameBoard() {
       <input type="hidden" name="firstServerEmail" value={firstServerEmail} />
 
       {!gameStarted ? (
-        <section className="grid min-h-[520px] place-items-center rounded-lg border border-line bg-graphite/92 p-6 text-center shadow-panel">
+        <section className="grid min-h-[430px] place-items-center rounded-lg border border-line bg-graphite/92 p-4 text-center shadow-panel sm:min-h-[520px] sm:p-6">
           <div className="max-w-xl">
             <div className="mx-auto grid h-20 w-20 place-items-center rounded-full border border-court/40 bg-court/10 text-court shadow-glow">
               <Play className="h-9 w-9 fill-current" />
             </div>
             <p className="mt-6 text-sm font-black uppercase tracking-[0.18em] text-court">Ready at the table</p>
-            <h2 className="mt-3 text-5xl font-black text-ink">Start a game</h2>
+            <h2 className="mt-3 text-4xl font-black text-ink sm:text-5xl">Start a game</h2>
             <p className="mx-auto mt-4 max-w-md text-sm leading-6 text-mist">
               Players do not need to sign in. Enter both player emails and PINs, verify the match, then flip for serve.
             </p>
@@ -222,7 +222,7 @@ export function GameBoard() {
           showCoinFlipModal ? "grid" : "hidden"
         )}
       >
-          <section className="relative w-full max-w-md overflow-hidden rounded-lg border border-court/40 bg-graphite p-6 text-center text-ink shadow-glow">
+          <section className="relative max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto rounded-lg border border-court/40 bg-graphite p-4 text-center text-ink shadow-glow sm:p-6">
             <button
               type="button"
               onClick={() => setShowCoinFlipModal(false)}
@@ -316,7 +316,7 @@ export function GameBoard() {
         <div className="fixed inset-0 z-30 grid place-items-center bg-night/78 px-4 backdrop-blur-sm">
           <section
             aria-live="polite"
-            className="relative w-full max-w-md overflow-hidden rounded-lg border border-court/40 bg-graphite p-6 text-center text-ink shadow-glow"
+            className="relative max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto rounded-lg border border-court/40 bg-graphite p-4 text-center text-ink shadow-glow sm:p-6"
           >
             <button
               type="button"

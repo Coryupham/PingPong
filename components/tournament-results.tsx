@@ -44,7 +44,7 @@ export function TournamentResults({ tournaments }: { tournaments: Tournament[] }
   const previousTournaments = tournaments.slice(1);
 
   return (
-    <div className="grid gap-5">
+    <div className="grid min-w-0 gap-5">
       <TournamentBracket tournament={featuredTournament} featured />
       {previousTournaments.length ? (
         <section className="rounded-lg border border-line bg-graphite/92 p-5 shadow-panel">
@@ -87,7 +87,7 @@ function TournamentBracket({ tournament, featured = false }: { tournament: Tourn
   }, 0);
 
   return (
-    <article className={cn("rounded-lg border border-line bg-graphite/92 p-4 shadow-panel sm:p-5", !featured && "bg-night/70 shadow-none")}>
+    <article className={cn("min-w-0 overflow-hidden rounded-lg border border-line bg-graphite/92 p-4 shadow-panel sm:p-5", !featured && "bg-night/70 shadow-none")}>
       <div className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-start">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.16em] text-court">
@@ -107,8 +107,8 @@ function TournamentBracket({ tournament, featured = false }: { tournament: Tourn
         ))}
       </div>
 
-      <div className="mt-6 overflow-x-auto pb-2">
-        <div className="grid min-w-[760px] auto-cols-[minmax(23rem,1fr)] grid-flow-col gap-4">
+      <div className="mobile-scroll -mx-1 mt-6 max-w-full overflow-x-auto px-1 pb-2">
+        <div className="grid w-max auto-cols-[minmax(18rem,22rem)] grid-flow-col gap-3 sm:w-full sm:auto-cols-[minmax(22rem,1fr)] sm:gap-4">
           {tournament.rounds.map((round) => (
             <section key={round.round} className="rounded-md border border-line bg-night/80 p-3">
               <div className="flex items-center justify-between gap-3">

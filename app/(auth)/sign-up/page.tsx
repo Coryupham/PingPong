@@ -4,7 +4,7 @@ import { Field, Panel, inputClass } from "@/components/ui";
 
 export default function SignUpPage() {
   return (
-    <main className="mx-auto max-w-md px-4 py-10">
+    <main className="mx-auto max-w-md px-3 py-6 sm:px-4 sm:py-10">
       <Panel>
         <p className="text-sm font-black uppercase tracking-[0.16em] text-court">League roster</p>
         <h1 className="mt-2 text-3xl font-black text-ink">Create your player</h1>

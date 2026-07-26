@@ -9,7 +9,7 @@ export function Panel({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
   return (
     <div
       className={cn(
-        "rounded-lg border border-line bg-graphite/92 p-5 text-ink shadow-panel",
+        "min-w-0 rounded-lg border border-line bg-graphite/92 p-4 text-ink shadow-panel sm:p-5",
         className
       )}
       {...props}
@@ -25,7 +25,7 @@ export function SubmitButton({
   return (
     <button
       className={cn(
-        "focus-ring inline-flex items-center justify-center rounded-md bg-court px-4 py-2 font-black text-night shadow-glow hover:bg-emerald-300 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400 disabled:shadow-none",
+        "focus-ring inline-flex min-h-11 items-center justify-center rounded-md bg-court px-4 py-2 font-black text-night shadow-glow hover:bg-emerald-300 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400 disabled:shadow-none",
         className
       )}
       {...props}
@@ -51,4 +51,4 @@ export function Field({
 }
 
 export const inputClass =
-  "focus-ring w-full rounded-md border border-line bg-night/80 px-3 py-2 text-ink shadow-sm placeholder:text-slate-500 focus:border-court";
+  "focus-ring min-h-11 w-full rounded-md border border-line bg-night/80 px-3 py-2.5 text-base text-ink shadow-sm placeholder:text-slate-500 focus:border-court sm:text-sm";

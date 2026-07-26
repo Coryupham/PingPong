@@ -54,7 +54,7 @@ export function AdminVoidMatchForm({
       <input type="hidden" name="matchId" value={matchId} />
       <button
         disabled={pending}
-        className="focus-ring w-fit rounded-md border border-paddle/40 px-4 py-2 font-bold text-paddle hover:bg-paddle/10 disabled:cursor-not-allowed disabled:border-slate-700 disabled:text-slate-500"
+        className="focus-ring min-h-11 w-fit rounded-md border border-paddle/40 px-4 py-2 font-bold text-paddle hover:bg-paddle/10 disabled:cursor-not-allowed disabled:border-slate-700 disabled:text-slate-500"
       >
         {pending ? "Voiding..." : "Void match"}
       </button>

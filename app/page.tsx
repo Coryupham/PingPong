@@ -7,8 +7,8 @@ export default async function HomePage() {
   const leaders = rankings.slice(0, 3);
 
   return (
-    <main className="mx-auto grid max-w-6xl gap-8 px-4 py-8 lg:grid-cols-[1.12fr_0.88fr]">
-      <section className="relative flex min-h-[560px] overflow-hidden rounded-lg border border-line bg-graphite p-6 text-ink shadow-panel sm:p-8">
+    <main className="mx-auto grid max-w-6xl gap-5 px-3 py-5 sm:gap-8 sm:px-4 sm:py-8 lg:grid-cols-[1.12fr_0.88fr]">
+      <section className="relative flex min-h-[470px] min-w-0 overflow-hidden rounded-lg border border-line bg-graphite p-5 text-ink shadow-panel sm:min-h-[560px] sm:p-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_28%,rgba(46,213,115,0.18),transparent_18rem)]" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-court/70" />
         <div className="relative flex flex-1 flex-col justify-between">
@@ -16,23 +16,23 @@ export default async function HomePage() {
           <p className="mb-3 text-sm font-black uppercase tracking-[0.16em] text-court">
             Neon Arcade Lite
           </p>
-          <h1 className="max-w-2xl text-4xl font-black leading-tight sm:text-6xl">
+          <h1 className="max-w-2xl text-4xl font-black leading-[1.08] sm:text-6xl sm:leading-tight">
             Fast matches. Clean scores. Proper bragging rights.
           </h1>
-          <p className="mt-5 max-w-xl text-lg leading-8 text-mist">
+          <p className="mt-5 max-w-xl text-base leading-7 text-mist sm:text-lg sm:leading-8">
             A table-side league app with quick scoring, PIN-confirmed matches, Elo rankings,
             and just enough glow to make winning feel official.
           </p>
         </div>
-        <div className="mt-10 grid gap-3 sm:grid-cols-2">
+        <div className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2">
           <Link
-            className="focus-ring rounded-md bg-court px-4 py-3 text-center font-black text-night shadow-glow hover:bg-emerald-300"
+            className="focus-ring flex min-h-12 items-center justify-center rounded-md bg-court px-4 py-3 text-center font-black text-night shadow-glow hover:bg-emerald-300"
             href="/game"
           >
             Start game
           </Link>
           <Link
-            className="focus-ring rounded-md border border-line px-4 py-3 text-center font-bold text-ink hover:bg-night"
+            className="focus-ring flex min-h-12 items-center justify-center rounded-md border border-line px-4 py-3 text-center font-bold text-ink hover:bg-night"
             href="/rankings"
           >
             View rankings
@@ -41,7 +41,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="grid gap-4">
+      <section className="grid min-w-0 gap-4">
         <div className="rounded-lg border border-line bg-graphite/92 p-5 shadow-panel">
           <div className="flex items-center gap-3">
             <Trophy className="h-5 w-5 text-gold" />

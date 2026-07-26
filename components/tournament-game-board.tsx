@@ -146,7 +146,7 @@ export function TournamentGameBoard({
       <input type="hidden" name="playerTwoScore" value={playerTwoScore} />
 
       {!gameStarted ? (
-        <section className="grid min-h-[460px] place-items-center rounded-lg border border-line bg-graphite/92 p-6 text-center shadow-panel">
+        <section className="grid min-h-[420px] place-items-center rounded-lg border border-line bg-graphite/92 p-4 text-center shadow-panel sm:min-h-[460px] sm:p-6">
           <div className="max-w-xl">
             <div className="mx-auto grid h-20 w-20 place-items-center rounded-full border border-court/40 bg-court/10 text-court shadow-glow">
               <Play className="h-9 w-9 fill-current" />
@@ -251,7 +251,7 @@ export function TournamentGameBoard({
           showCoinFlipModal ? "grid" : "hidden"
         )}
       >
-        <section className="relative w-full max-w-md overflow-hidden rounded-lg border border-court/40 bg-graphite p-6 text-center text-ink shadow-glow">
+        <section className="relative max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto rounded-lg border border-court/40 bg-graphite p-4 text-center text-ink shadow-glow sm:p-6">
           <button
             type="button"
             onClick={() => setShowCoinFlipModal(false)}
@@ -287,7 +287,7 @@ export function TournamentGameBoard({
         <div className="fixed inset-0 z-30 grid place-items-center bg-night/78 px-4 backdrop-blur-sm">
           <section
             aria-live="polite"
-            className="relative w-full max-w-md overflow-hidden rounded-lg border border-court/40 bg-graphite p-6 text-center text-ink shadow-glow"
+            className="relative max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto rounded-lg border border-court/40 bg-graphite p-4 text-center text-ink shadow-glow sm:p-6"
           >
             <button
               type="button"
