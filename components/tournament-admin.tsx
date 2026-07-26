@@ -122,9 +122,9 @@ export function TournamentAdmin({
   }
 
   return (
-    <div className="grid gap-6">
+    <div className="grid min-w-0 gap-5 sm:gap-6">
       {!hasActiveTournament ? (
-        <section className="rounded-lg border border-line bg-graphite/92 p-5 shadow-panel">
+        <section className="min-w-0 rounded-lg border border-line bg-graphite/92 p-4 shadow-panel sm:p-5">
           <div className="flex items-center gap-2">
             <CalendarPlus className="h-5 w-5 text-court" />
             <h2 className="text-2xl font-black text-ink">Create tournament</h2>
@@ -237,7 +237,7 @@ export function TournamentAdmin({
         </section>
       ) : null}
 
-      <section className="rounded-lg border border-line bg-graphite/92 p-5 shadow-panel">
+      <section className="min-w-0 rounded-lg border border-line bg-graphite/92 p-4 shadow-panel sm:p-5">
         <div className="flex items-center gap-2">
           <Trophy className="h-5 w-5 text-gold" />
           <h2 className="text-2xl font-black text-ink">Tournaments</h2>
@@ -322,7 +322,7 @@ function TournamentCard({ tournament }: { tournament: Tournament }) {
   const champion = tournament.status === "complete" ? teamsById.get(currentRound?.matches[0]?.winnerTeamId ?? "") : null;
 
   return (
-    <div className="rounded-md border border-line bg-night/70 p-4">
+    <div className="min-w-0 overflow-hidden rounded-md border border-line bg-night/70 p-3 sm:p-4">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h3 className="text-xl font-black text-ink">{tournament.name}</h3>
@@ -348,8 +348,8 @@ function TournamentCard({ tournament }: { tournament: Tournament }) {
         ))}
       </div>
 
-      <div className="mt-6 overflow-x-auto pb-2">
-        <div className="grid min-w-[720px] auto-cols-[minmax(22rem,1fr)] grid-flow-col gap-4">
+      <div className="mobile-scroll -mx-1 mt-6 max-w-full overflow-x-auto px-1 pb-2">
+        <div className="grid w-max auto-cols-[minmax(18rem,22rem)] grid-flow-col gap-3 sm:w-full sm:auto-cols-[minmax(22rem,1fr)] sm:gap-4">
         {tournament.rounds.map((round) => (
           <section key={round.round} className="rounded-md border border-line bg-graphite/45 p-3">
             <div className="flex items-center justify-between gap-3">

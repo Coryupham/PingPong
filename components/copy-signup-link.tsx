@@ -25,7 +25,7 @@ export function CopySignupLink({ path = "/sign-up" }: { path?: string }) {
         type="button"
         onClick={copyLink}
         className={cn(
-          "focus-ring inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-black",
+          "focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-black",
           copied ? "bg-court text-night" : "border border-court/40 text-court hover:bg-court/10"
         )}
       >

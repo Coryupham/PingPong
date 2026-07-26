@@ -35,8 +35,8 @@ export default async function AdminPage() {
   ]);
 
   return (
-    <main className="mx-auto grid max-w-6xl items-start gap-6 px-4 py-8 lg:grid-cols-[0.85fr_1.15fr]">
-      <section className="grid content-start gap-6">
+    <main className="mx-auto grid max-w-6xl items-start gap-5 px-3 py-5 sm:gap-6 sm:px-4 sm:py-8 lg:grid-cols-[0.85fr_1.15fr]">
+      <section className="grid min-w-0 content-start gap-5 sm:gap-6">
         <Panel>
           <h1 className="text-3xl font-black text-ink">Admin</h1>
           <p className="mt-2 text-sm leading-6 text-mist">
@@ -112,7 +112,7 @@ export default async function AdminPage() {
         </Panel>
       </section>
 
-      <section className="grid auto-rows-max content-start items-start gap-3">
+      <section className="grid min-w-0 auto-rows-max content-start items-start gap-3">
         <Panel className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="flex items-center gap-2">
@@ -178,7 +178,7 @@ export default async function AdminPage() {
 
 function DatabasePanel({ database }: { database: AdminDatabaseSnapshot }) {
   return (
-    <Panel className="grid gap-5">
+    <Panel className="grid min-w-0 gap-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
@@ -283,9 +283,9 @@ function DatabaseStat({ label, value }: { label: string; value: number }) {
 
 function DatabaseTable({ title, headers, rows }: { title: string; headers: string[]; rows: string[][] }) {
   return (
-    <div>
+    <div className="min-w-0">
       <h3 className="text-sm font-black uppercase tracking-[0.14em] text-court">{title}</h3>
-      <div className="mt-2 overflow-x-auto rounded-md border border-line">
+      <div className="mobile-scroll mt-2 max-w-full overflow-x-auto rounded-md border border-line">
         <table className="w-full min-w-[520px] border-collapse text-left text-sm">
           <thead className="bg-night text-xs uppercase tracking-[0.12em] text-mist">
             <tr>
